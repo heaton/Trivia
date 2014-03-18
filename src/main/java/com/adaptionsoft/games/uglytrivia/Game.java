@@ -123,7 +123,7 @@ public class Game {
 
     private boolean correctlyAnswerAndAddCoin() {
         System.out.println("Answer was correct!!!!");
-        inscreaseCoin();
+        increaseCoin();
         System.out.println(players.get(currentPlayer)
                 + " now has "
                 + purses[currentPlayer]
@@ -135,7 +135,7 @@ public class Game {
         return winner;
     }
 
-    private void inscreaseCoin() {
+    private void increaseCoin() {
         purses[currentPlayer]++;
     }
 
