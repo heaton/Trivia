@@ -134,7 +134,7 @@ public class TestGame {
     private void correctAndVerify(String currentPlayer, int coins) {
         boolean noWinner = game.wasCorrectlyAnswered();
         assertTrue(noWinner);
-        verifyOutputAndClean("Answer was corrent!!!!", currentPlayer + " now has " + coins + " Gold Coins.");
+        verifyOutputAndClean("Answer was correct!!!!", currentPlayer + " now has " + coins + " Gold Coins.");
     }
 
     @Test
