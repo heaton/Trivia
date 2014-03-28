@@ -124,10 +124,10 @@ public class Game {
                 + purses[currentPlayerIndex]
                 + " Gold Coins.");
 
-        boolean winner = didPlayerWin();
+        boolean hasWinner = didPlayerWin();
         nextPlayer();
 
-        return winner;
+        return hasWinner;
     }
 
     private void increaseCoin() {
