@@ -8,9 +8,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class TestGame {
 
@@ -222,4 +220,24 @@ public class TestGame {
         assertTrue(game.isPlayable());
     }
 
+    @Test
+    public void test_players_limit_of_5() {
+        game.add("P1");
+        game.add("P2");
+        game.add("P3");
+        game.add("P4");
+        game.add("P5");
+        assertEquals(5, game.howManyPlayers());
+    }
+
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    public void test_players_limit_expection_if_6() {
+        game.add("P1");
+        game.add("P2");
+        game.add("P3");
+        game.add("P4");
+        game.add("P5");
+        game.add("P6");
+        fail();
+    }
 }
