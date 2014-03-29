@@ -13,9 +13,6 @@ public class Game {
     public static final String ROCK = "Rock";
 
     private List<Player> players = new ArrayList<Player>();
-    int[] places = new int[6];
-    int[] purses  = new int[6];
-    boolean[] inPenaltyBox  = new boolean[6];
 
     LinkedList popQuestions = new LinkedList();
     LinkedList scienceQuestions = new LinkedList();
@@ -42,15 +39,15 @@ public class Game {
 		return (howManyPlayers() >= 2);
 	}
 
-	public boolean addPlayer(String playerName) {
+	public boolean addPlayer(String playerName) throws ArrayIndexOutOfBoundsException {
 
+        if(howManyPlayers() >= 5){
+            throw new ArrayIndexOutOfBoundsException();
+        }
         Player player = new Player(playerName);
         players.add(player);
-        places[howManyPlayers()] = 0;
-        purses[howManyPlayers()] = 0;
-        inPenaltyBox[howManyPlayers()] = false;
 
-        System.out.println(playerName + " was added");
+        System.out.println(player.name() + " was added");
         System.out.println("They are player number " + howManyPlayers());
         return true;
     }
@@ -77,7 +74,7 @@ public class Game {
         move(roll);
         System.out.println(currentPlayer().name()
                 + "'s new location is "
-                + places[currentPlayerIndex]);
+                + currentPlayer().place());
         System.out.println("The category is " + currentQuestionCategory());
 
         askQuestion();
@@ -93,12 +90,11 @@ public class Game {
     }
 
     private boolean isInPenaltyBox() {
-        return inPenaltyBox[currentPlayerIndex];
+        return currentPlayer().isInPenaltyBox();
     }
 
     private void move(int step) {
-        places[currentPlayerIndex] = places[currentPlayerIndex] + step;
-        if (places[currentPlayerIndex] > 11) places[currentPlayerIndex] = places[currentPlayerIndex] - 12;
+        currentPlayer().move(step);
     }
 
     private void askQuestion() {
@@ -114,9 +110,9 @@ public class Game {
 	
 	
 	private String currentQuestionCategory() {
-		if (places[currentPlayerIndex] % QUESTION_AMOUNT == 0) return POP;
-		if (places[currentPlayerIndex] % QUESTION_AMOUNT == 1) return SCIENCE;
-		if (places[currentPlayerIndex] % QUESTION_AMOUNT == 2) return SPORTS;
+		if (currentPlayer().place() % QUESTION_AMOUNT == 0) return POP;
+		if (currentPlayer().place() % QUESTION_AMOUNT == 1) return SCIENCE;
+		if (currentPlayer().place() % QUESTION_AMOUNT == 2) return SPORTS;
 		return ROCK;
 	}
 
@@ -134,7 +130,7 @@ public class Game {
         increaseCoin();
         System.out.println(currentPlayer().name()
                 + " now has "
-                + purses[currentPlayerIndex]
+                + currentPlayer().purse()
                 + " Gold Coins.");
 
         boolean hasWinner = didPlayerWin();
@@ -144,7 +140,7 @@ public class Game {
     }
 
     private void increaseCoin() {
-        purses[currentPlayerIndex]++;
+        currentPlayer().winOneCoin();
     }
 
     private void nextPlayer() {
@@ -159,7 +155,7 @@ public class Game {
     public boolean wrongAnswer(){
 		System.out.println("Question was incorrectly answered");
 		System.out.println(currentPlayer().name() + " was sent to the penalty box");
-		inPenaltyBox[currentPlayerIndex] = true;
+        currentPlayer().goIntoPenaltyBox();
 
         nextPlayer();
 		return true;
@@ -167,6 +163,6 @@ public class Game {
 
 
 	private boolean didPlayerWin() {
-		return !(purses[currentPlayerIndex] == 6);
+		return !(currentPlayer().purse() == 6);
 	}
 }
