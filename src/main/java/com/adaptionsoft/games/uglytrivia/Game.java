@@ -4,7 +4,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Game {
+
     public static final int QUESTION_AMOUNT = 4;
+    public static final String POP = "Pop";
+    public static final String SCIENCE = "Science";
+    public static final String SPORTS = "Sports";
+    public static final String ROCK = "Rock";
+
     ArrayList players = new ArrayList();
     int[] places = new int[6];
     int[] purses  = new int[6];
@@ -89,22 +95,22 @@ public class Game {
 	}
 
 	private void askQuestion() {
-		if (currentQuestionCategory() == "Pop")
+		if (currentQuestionCategory() == POP)
 			System.out.println(popQuestions.removeFirst());
-		if (currentQuestionCategory() == "Science")
+		if (currentQuestionCategory() == SCIENCE)
 			System.out.println(scienceQuestions.removeFirst());
-		if (currentQuestionCategory() == "Sports")
+		if (currentQuestionCategory() == SPORTS)
 			System.out.println(sportsQuestions.removeFirst());
-		if (currentQuestionCategory() == "Rock")
+		if (currentQuestionCategory() == ROCK)
 			System.out.println(rockQuestions.removeFirst());		
 	}
 	
 	
 	private String currentQuestionCategory() {
-		if (places[currentPlayerIndex] % QUESTION_AMOUNT == 0) return "Pop";
-		if (places[currentPlayerIndex] % QUESTION_AMOUNT == 1) return "Science";
-		if (places[currentPlayerIndex] % QUESTION_AMOUNT == 2) return "Sports";
-		return "Rock";
+		if (places[currentPlayerIndex] % QUESTION_AMOUNT == 0) return POP;
+		if (places[currentPlayerIndex] % QUESTION_AMOUNT == 1) return SCIENCE;
+		if (places[currentPlayerIndex] % QUESTION_AMOUNT == 2) return SPORTS;
+		return ROCK;
 	}
 
 	public boolean wasCorrectlyAnswered() {
