@@ -221,7 +221,7 @@ public class TestGame {
     }
 
     @Test
-    public void test_players_limit_expection_if_6() {
+    public void players_limit_rather_than_5() {
         game.addPlayer("P1");
         game.addPlayer("P2");
         game.addPlayer("P3");
