@@ -95,14 +95,7 @@ public class Game {
     }
 
     private void askQuestion() {
-		if (currentQuestionCategory() == POP)
-			System.out.println(popQuestions.pop());
-		if (currentQuestionCategory() == SCIENCE)
-			System.out.println(scienceQuestions.pop());
-		if (currentQuestionCategory() == SPORTS)
-			System.out.println(sportsQuestions.pop());
-		if (currentQuestionCategory() == ROCK)
-			System.out.println(rockQuestions.pop());
+        System.out.println(currentQuestion().pop());
 	}
 	
 	
