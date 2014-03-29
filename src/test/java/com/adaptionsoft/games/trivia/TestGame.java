@@ -104,7 +104,6 @@ public class TestGame {
     public void wrong_answer_than_send_to_penalty_box() {
         game.addPlayer("Petter");
         game.addPlayer("Harry");
-        console.clear();
 
         wrongAndVerify("Petter");
         wrongAndVerify("Harry");
@@ -113,6 +112,8 @@ public class TestGame {
     }
 
     private void wrongAndVerify(String currentPlayer) {
+        game.roll(1);
+        console.clear();
         boolean noWinner = game.wrongAnswer();
         assertTrue(noWinner);
         verifyOutputAndClean("Question was incorrectly answered", currentPlayer + " was sent to the penalty box");
@@ -230,4 +231,19 @@ public class TestGame {
         game.addPlayer("P6");
         assertEquals(6, game.howManyPlayers());
     }
+
+    @Test
+    public void wrong_answer_stay_in_penalty_box_should_no_message() {
+        game.addPlayer("Petter");
+        game.roll(1);
+        game.wrongAnswer();
+
+        game.roll(2);
+
+        console.clear();
+
+        game.wrongAnswer();
+        verifyOutputAndClean();
+    }
+
 }

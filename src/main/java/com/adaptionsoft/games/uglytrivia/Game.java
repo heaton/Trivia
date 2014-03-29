@@ -118,9 +118,11 @@ public class Game {
 	}
 
     public boolean wrongAnswer() {
-        notifier.incorrectAndSendToPenaltyBox(currentPlayer().name());
+        if(!stayInPenaltyBox()){
+            notifier.incorrectAndSendToPenaltyBox(currentPlayer().name());
+            currentPlayer().goIntoPenaltyBox();
+        }
 
-        currentPlayer().goIntoPenaltyBox();
         nextPlayer();
         return true;
     }
