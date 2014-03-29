@@ -14,20 +14,20 @@ public class Game {
 
     private List<Player> players = new ArrayList<Player>();
 
-    LinkedList popQuestions = new LinkedList();
-    LinkedList scienceQuestions = new LinkedList();
-    LinkedList sportsQuestions = new LinkedList();
-    LinkedList rockQuestions = new LinkedList();
+    private QuestionQueue popQuestions = new QuestionQueue();
+    private QuestionQueue scienceQuestions = new QuestionQueue();
+    private QuestionQueue sportsQuestions = new QuestionQueue();
+    private QuestionQueue rockQuestions = new QuestionQueue();
     
     int currentPlayerIndex = 0;
     boolean isGettingOutOfPenaltyBox;
     
     public  Game(){
     	for (int i = 0; i < 50; i++) {
-			popQuestions.addLast("Pop Question " + i);
-			scienceQuestions.addLast(("Science Question " + i));
-			sportsQuestions.addLast(("Sports Question " + i));
-			rockQuestions.addLast(createRockQuestion(i));
+			popQuestions.put("Pop Question " + i);
+			scienceQuestions.put(("Science Question " + i));
+			sportsQuestions.put(("Sports Question " + i));
+			rockQuestions.put(createRockQuestion(i));
     	}
     }
 
@@ -96,13 +96,13 @@ public class Game {
 
     private void askQuestion() {
 		if (currentQuestionCategory() == POP)
-			System.out.println(popQuestions.removeFirst());
+			System.out.println(popQuestions.pop());
 		if (currentQuestionCategory() == SCIENCE)
-			System.out.println(scienceQuestions.removeFirst());
+			System.out.println(scienceQuestions.pop());
 		if (currentQuestionCategory() == SPORTS)
-			System.out.println(sportsQuestions.removeFirst());
+			System.out.println(sportsQuestions.pop());
 		if (currentQuestionCategory() == ROCK)
-			System.out.println(rockQuestions.removeFirst());		
+			System.out.println(rockQuestions.pop());
 	}
 	
 	
