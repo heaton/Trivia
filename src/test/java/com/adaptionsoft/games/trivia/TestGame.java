@@ -230,7 +230,7 @@ public class TestGame {
         assertEquals(5, game.howManyPlayers());
     }
 
-    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    @Test
     public void test_players_limit_expection_if_6() {
         game.addPlayer("P1");
         game.addPlayer("P2");
@@ -238,6 +238,6 @@ public class TestGame {
         game.addPlayer("P4");
         game.addPlayer("P5");
         game.addPlayer("P6");
-        fail();
+        assertEquals(6, game.howManyPlayers());
     }
 }

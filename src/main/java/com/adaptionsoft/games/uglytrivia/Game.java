@@ -39,11 +39,8 @@ public class Game {
 		return (howManyPlayers() >= 2);
 	}
 
-	public boolean addPlayer(String playerName) throws ArrayIndexOutOfBoundsException {
+	public boolean addPlayer(String playerName) {
 
-        if(howManyPlayers() >= 5){
-            throw new ArrayIndexOutOfBoundsException();
-        }
         Player player = new Player(playerName);
         players.add(player);
 
