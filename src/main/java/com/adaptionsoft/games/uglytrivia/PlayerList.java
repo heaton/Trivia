@@ -13,7 +13,8 @@ public class PlayerList {
         return players.size();
     }
 
-    public void add(Player player) {
+    public void add(String playerName) {
+        Player player = new Player(playerName);
         players.add(player);
     }
 

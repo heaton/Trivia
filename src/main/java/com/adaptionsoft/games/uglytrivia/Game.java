@@ -18,8 +18,7 @@ public class Game {
 
 	public boolean addPlayer(String playerName) {
 
-        Player player = new Player(playerName);
-        players.add(player);
+        players.add(playerName);
 
         notifier.playerAdded(playerName, howManyPlayers());
 
