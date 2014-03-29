@@ -1,44 +1,21 @@
 package com.adaptionsoft.games.uglytrivia;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Game {
 
-    public static final int QUESTION_AMOUNT = 4;
-    public static final String POP = "Pop";
-    public static final String SCIENCE = "Science";
-    public static final String SPORTS = "Sports";
-    public static final String ROCK = "Rock";
-
     private List<Player> players = new ArrayList<Player>();
 
-    private QuestionQueue popQuestions = new QuestionQueue(POP);
-    private QuestionQueue scienceQuestions = new QuestionQueue(SCIENCE);
-    private QuestionQueue sportsQuestions = new QuestionQueue(SPORTS);
-    private QuestionQueue rockQuestions = new QuestionQueue(ROCK);
-    
+    private QuestionStorage questions = new QuestionStorage();
+
     int currentPlayerIndex = 0;
     boolean isGettingOutOfPenaltyBox;
     
     public Game(){
-        initQuestions();
+        questions.init();
     }
 
-    private void initQuestions() {
-        for (int i = 0; i < 50; i++) {
-            popQuestions.put("Pop Question " + i);
-            scienceQuestions.put(("Science Question " + i));
-            sportsQuestions.put(("Sports Question " + i));
-            rockQuestions.put(createRockQuestion(i));
-        }
-    }
-
-    public String createRockQuestion(int index){
-		return "Rock Question " + index;
-	}
-	
 	public boolean isPlayable() {
 		return (howManyPlayers() >= 2);
 	}
@@ -108,10 +85,7 @@ public class Game {
 	}
 
     private QuestionQueue currentQuestion(){
-        if (currentPlayer().place() % QUESTION_AMOUNT == 0) return popQuestions;
-        if (currentPlayer().place() % QUESTION_AMOUNT == 1) return scienceQuestions;
-        if (currentPlayer().place() % QUESTION_AMOUNT == 2) return sportsQuestions;
-        return rockQuestions;
+        return questions.get(currentPlayer().place() % questions.size());
     }
 
 	public boolean wasCorrectlyAnswered() {
@@ -159,8 +133,8 @@ public class Game {
 		return true;
 	}
 
-
 	private boolean didPlayerWin() {
 		return currentPlayer().isWin();
 	}
+
 }
