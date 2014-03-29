@@ -2,16 +2,12 @@ package com.adaptionsoft.games.uglytrivia;
 
 import com.adaptionsoft.games.uglytrivia.question.QuestionQueue;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Game {
 
-    private List<Player> players = new ArrayList<Player>();
+    private PlayerList players = new PlayerList();
 
     private QuestionStorage questions = new QuestionStorage();
 
-    int currentPlayerIndex = 0;
     boolean isGettingOutOfPenaltyBox;
     
     public Game(){
@@ -19,8 +15,8 @@ public class Game {
     }
 
 	public boolean isPlayable() {
-		return (howManyPlayers() >= 2);
-	}
+        return howManyPlayers() >= 2;
+    }
 
 	public boolean addPlayer(String playerName) {
 
@@ -33,7 +29,7 @@ public class Game {
     }
 
     public int howManyPlayers() {
-		return players.size();
+		return players.count();
 	}
 
 	public void roll(int roll) {
@@ -62,7 +58,7 @@ public class Game {
 	}
 
     private Player currentPlayer() {
-        return players.get(currentPlayerIndex);
+        return players.currentPlayer();
     }
 
     private boolean notGetoutOfPenaltyBox(int roll) {
@@ -118,8 +114,7 @@ public class Game {
     }
 
     private void nextPlayer() {
-        currentPlayerIndex++;
-        if (currentPlayerIndex == players.size()) currentPlayerIndex = 0;
+        players.next();
     }
 
     private boolean stayInPenaltyBox() {
