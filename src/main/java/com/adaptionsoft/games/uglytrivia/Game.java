@@ -8,13 +8,12 @@ public class Game {
 
     private QuestionStorage questions = new QuestionStorage();
 
-    private boolean isGettingOutOfPenaltyBox;
+    private Notifier notifier = new Notifier();
 
-    private Messages messages;
+    private boolean isGettingOutOfPenaltyBox;
 
     public Game(){
         questions.init();
-        messages = Messages.getDefault();
     }
 
 	public boolean addPlayer(String playerName) {
@@ -22,13 +21,9 @@ public class Game {
         Player player = new Player(playerName);
         players.add(player);
 
-        sendMessage(messages.wasAdded(playerName));
-        sendMessage(messages.playerNumber(howManyPlayers()));
-        return true;
-    }
+        notifier.playerAdded(playerName, howManyPlayers());
 
-    private void sendMessage(String message){
-        System.out.println(message);
+        return true;
     }
 
     public boolean isPlayable() {
@@ -40,25 +35,25 @@ public class Game {
 	}
 
 	public void roll(int number) {
-		sendMessage(messages.currentPlayer(currentPlayer().name()));
-		sendMessage(messages.haveRolled(number));
-		
+        notifier.rolled(currentPlayer().name(), number);
+
 		if (isInPenaltyBox() && notGetoutOfPenaltyBox(number)) {
             isGettingOutOfPenaltyBox = false;
-            sendMessage(messages.notGettingOutOfPenaltyBox(currentPlayer().name()));
+            notifier.notGettingOutOfPenaltyBox(currentPlayer().name());
             return;
         }
 
         if (isInPenaltyBox()) {
             isGettingOutOfPenaltyBox = true;
-            sendMessage(messages.gettingOutOfPenaltyBox(currentPlayer().name()));
+            notifier.gettingOutOfPenaltyBox(currentPlayer().name());
         }
 
         move(number);
-        sendMessage(messages.newLocation(currentPlayer().name(), currentPlayer().place()));
-        sendMessage(messages.categoryIs(currentQuestionCategory()));
+        notifier.newLocation(currentPlayer().name(), currentPlayer().place());
 
-        askQuestion();
+        String question = currentQuestion().pop();
+
+        notifier.newQuestion(currentQuestionCategory(), question);
 
 	}
 
@@ -78,11 +73,6 @@ public class Game {
         currentPlayer().move(step);
     }
 
-    private void askQuestion() {
-        sendMessage(currentQuestion().pop());
-	}
-	
-
 	private String currentQuestionCategory() {
         return currentQuestion().category();
 	}
@@ -101,9 +91,9 @@ public class Game {
 	}
 
     private boolean correctlyAnswerAndAddCoin() {
-        sendMessage(messages.correctAnswer());
         increaseCoin();
-        sendMessage(messages.currentCoins(currentPlayer().name(), currentPlayer().purse()));
+
+        notifier.correctAndCurrentCoins(currentPlayer().name(), currentPlayer().purse());
 
         boolean hasWinner = didPlayerWin();
         nextPlayer();
@@ -127,11 +117,10 @@ public class Game {
 		return currentPlayer().isWin();
 	}
 
-    public boolean wrongAnswer(){
-        sendMessage(messages.incorrectAnswer());
-        sendMessage(messages.sendToPenaltyBox(currentPlayer().name()));
-        currentPlayer().goIntoPenaltyBox();
+    public boolean wrongAnswer() {
+        notifier.incorrectAndSendToPenaltyBox(currentPlayer().name());
 
+        currentPlayer().goIntoPenaltyBox();
         nextPlayer();
         return true;
     }

@@ -22,10 +22,6 @@ public class Messages {
         return player + " is not getting out of the penalty box";
     }
 
-    public static Messages getDefault() {
-        return new Messages();
-    }
-
     public String gettingOutOfPenaltyBox(String player) {
         return player  + " is getting out of the penalty box";
     }
@@ -52,6 +48,10 @@ public class Messages {
 
     public String sendToPenaltyBox(String player) {
         return player + " was sent to the penalty box";
+    }
+
+    public static Messages getDefault() {
+        return new Messages();
     }
 
 }
