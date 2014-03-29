@@ -221,16 +221,6 @@ public class TestGame {
     }
 
     @Test
-    public void test_players_limit_of_5() {
-        game.addPlayer("P1");
-        game.addPlayer("P2");
-        game.addPlayer("P3");
-        game.addPlayer("P4");
-        game.addPlayer("P5");
-        assertEquals(5, game.howManyPlayers());
-    }
-
-    @Test
     public void test_players_limit_expection_if_6() {
         game.addPlayer("P1");
         game.addPlayer("P2");
