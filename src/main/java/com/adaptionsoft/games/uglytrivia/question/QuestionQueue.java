@@ -5,16 +5,16 @@ import java.util.LinkedList;
 
 public class QuestionQueue {
 
-    private String category;
+    private QuestionCategory category;
     private Deque<String> list;
 
-    public QuestionQueue(String category) {
+    public QuestionQueue(QuestionCategory category) {
         this.category = category;
         list = new LinkedList<String>();
     }
 
     public String category() {
-        return category;
+        return category.getName();
     }
 
     public void put(String question) {
