@@ -9,13 +9,12 @@ public class Game {
     private QuestionStorage questions = new QuestionStorage();
 
     private boolean isGettingOutOfPenaltyBox;
-    
+
+    private Messages messages;
+
     public Game(){
         questions.init();
-    }
-
-	public boolean isPlayable() {
-        return howManyPlayers() >= 2;
+        messages = Messages.getDefault();
     }
 
 	public boolean addPlayer(String playerName) {
@@ -23,8 +22,8 @@ public class Game {
         Player player = new Player(playerName);
         players.add(player);
 
-        sendMessage(player.name() + " was added");
-        sendMessage("They are player number " + howManyPlayers());
+        sendMessage(messages.wasAdded(playerName));
+        sendMessage(messages.playerNumber(howManyPlayers()));
         return true;
     }
 
@@ -32,30 +31,32 @@ public class Game {
         System.out.println(message);
     }
 
+    public boolean isPlayable() {
+        return howManyPlayers() >= 2;
+    }
+
     public int howManyPlayers() {
 		return players.count();
 	}
 
-	public void roll(int roll) {
-		sendMessage(currentPlayer().name() + " is the current player");
-		sendMessage("They have rolled a " + roll);
+	public void roll(int number) {
+		sendMessage(messages.currentPlayer(currentPlayer().name()));
+		sendMessage(messages.haveRolled(number));
 		
-		if (isInPenaltyBox() && notGetoutOfPenaltyBox(roll)) {
+		if (isInPenaltyBox() && notGetoutOfPenaltyBox(number)) {
             isGettingOutOfPenaltyBox = false;
-            sendMessage(currentPlayer().name() + " is not getting out of the penalty box");
+            sendMessage(messages.notGettingOutOfPenaltyBox(currentPlayer().name()));
             return;
         }
 
         if (isInPenaltyBox()) {
             isGettingOutOfPenaltyBox = true;
-            sendMessage(currentPlayer().name() + " is getting out of the penalty box");
+            sendMessage(messages.gettingOutOfPenaltyBox(currentPlayer().name()));
         }
 
-        move(roll);
-        sendMessage(currentPlayer().name()
-                + "'s new location is "
-                + currentPlayer().place());
-        sendMessage("The category is " + currentQuestionCategory());
+        move(number);
+        sendMessage(messages.newLocation(currentPlayer().name(), currentPlayer().place()));
+        sendMessage(messages.categoryIs(currentQuestionCategory()));
 
         askQuestion();
 
@@ -100,12 +101,9 @@ public class Game {
 	}
 
     private boolean correctlyAnswerAndAddCoin() {
-        sendMessage("Answer was correct!!!!");
+        sendMessage(messages.correctAnswer());
         increaseCoin();
-        sendMessage(currentPlayer().name()
-                + " now has "
-                + currentPlayer().purse()
-                + " Gold Coins.");
+        sendMessage(messages.currentCoins(currentPlayer().name(), currentPlayer().purse()));
 
         boolean hasWinner = didPlayerWin();
         nextPlayer();
@@ -130,8 +128,8 @@ public class Game {
 	}
 
     public boolean wrongAnswer(){
-        sendMessage("Question was incorrectly answered");
-        sendMessage(currentPlayer().name() + " was sent to the penalty box");
+        sendMessage(messages.incorrectAnswer());
+        sendMessage(messages.sendToPenaltyBox(currentPlayer().name()));
         currentPlayer().goIntoPenaltyBox();
 
         nextPlayer();
