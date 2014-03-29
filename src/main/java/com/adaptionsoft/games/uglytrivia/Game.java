@@ -10,7 +10,7 @@ public class Game {
 
     private Notifier notifier = new Notifier();
 
-    private boolean isGettingOutOfPenaltyBox;
+    private int currentRoll;
 
     public Game(){
         questions.init();
@@ -34,16 +34,15 @@ public class Game {
 	}
 
 	public void roll(int number) {
+        currentRoll = number;
         notifier.rolled(currentPlayer().name(), number);
 
-		if (currentPlayer().isInPenaltyBox() && notGetoutOfPenaltyBox(number)) {
-            isGettingOutOfPenaltyBox = false;
+		if (currentPlayer().isInPenaltyBox() && notGetoutOfPenaltyBox()) {
             notifier.notGettingOutOfPenaltyBox(currentPlayer().name());
             return;
         }
 
         if (currentPlayer().isInPenaltyBox()) {
-            isGettingOutOfPenaltyBox = true;
             notifier.gettingOutOfPenaltyBox(currentPlayer().name());
         }
 
@@ -52,15 +51,15 @@ public class Game {
 	}
 
     private boolean stayInPenaltyBox() {
-        return currentPlayer().isInPenaltyBox() && !isGettingOutOfPenaltyBox;
+        return currentPlayer().isInPenaltyBox() && notGetoutOfPenaltyBox();
     }
 
     private Player currentPlayer() {
         return players.currentPlayer();
     }
 
-    private boolean notGetoutOfPenaltyBox(int roll) {
-        return roll % 2 == 0;
+    private boolean notGetoutOfPenaltyBox() {
+        return currentRoll % 2 == 0;
     }
 
     private void moveAndAskQuestion(int number) {
