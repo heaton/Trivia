@@ -1,5 +1,7 @@
 package com.adaptionsoft.games.uglytrivia;
 
+import com.adaptionsoft.games.uglytrivia.question.QuestionQueue;
+
 import java.util.ArrayList;
 import java.util.List;
 
