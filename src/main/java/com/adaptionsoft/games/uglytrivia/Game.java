@@ -36,25 +36,24 @@ public class Game {
 	public void roll(int number) {
         notifier.rolled(currentPlayer().name(), number);
 
-		if (isInPenaltyBox() && notGetoutOfPenaltyBox(number)) {
+		if (currentPlayer().isInPenaltyBox() && notGetoutOfPenaltyBox(number)) {
             isGettingOutOfPenaltyBox = false;
             notifier.notGettingOutOfPenaltyBox(currentPlayer().name());
             return;
         }
 
-        if (isInPenaltyBox()) {
+        if (currentPlayer().isInPenaltyBox()) {
             isGettingOutOfPenaltyBox = true;
             notifier.gettingOutOfPenaltyBox(currentPlayer().name());
         }
 
-        move(number);
-        notifier.newLocation(currentPlayer().name(), currentPlayer().place());
-
-        String question = currentQuestion().pop();
-
-        notifier.newQuestion(currentQuestionCategory(), question);
+        moveAndAskQuestion(number);
 
 	}
+
+    private boolean stayInPenaltyBox() {
+        return currentPlayer().isInPenaltyBox() && !isGettingOutOfPenaltyBox;
+    }
 
     private Player currentPlayer() {
         return players.currentPlayer();
@@ -64,20 +63,18 @@ public class Game {
         return roll % 2 == 0;
     }
 
-    private boolean isInPenaltyBox() {
-        return currentPlayer().isInPenaltyBox();
-    }
+    private void moveAndAskQuestion(int number) {
+        currentPlayer().move(number);
+        notifier.newLocation(currentPlayer().name(), currentPlayer().place());
 
-    private void move(int step) {
-        currentPlayer().move(step);
-    }
+        String question = currentQuestion().pop();
 
-	private String currentQuestionCategory() {
-        return currentQuestion().category();
-	}
+        notifier.newQuestion(currentQuestion().category(), question);
+    }
 
     private QuestionQueue currentQuestion(){
-        return questions.get(currentPlayer().place() % questions.size());
+        int questionIndex = currentPlayer().place() % questions.size();
+        return questions.get(questionIndex);
     }
 
 	public boolean wasCorrectlyAnswered() {
@@ -90,31 +87,19 @@ public class Game {
 	}
 
     private boolean correctlyAnswerAndAddCoin() {
-        increaseCoin();
+        currentPlayer().winOneCoin();
 
         notifier.correctAndCurrentCoins(currentPlayer().name(), currentPlayer().purse());
 
-        boolean hasWinner = didPlayerWin();
+        boolean hasWinner = currentPlayer().isWin();
         nextPlayer();
 
         return hasWinner;
     }
 
-    private void increaseCoin() {
-        currentPlayer().winOneCoin();
-    }
-
     private void nextPlayer() {
         players.next();
     }
-
-    private boolean stayInPenaltyBox() {
-        return isInPenaltyBox() && !isGettingOutOfPenaltyBox;
-    }
-
-	private boolean didPlayerWin() {
-		return currentPlayer().isWin();
-	}
 
     public boolean wrongAnswer() {
         if(!stayInPenaltyBox()){
