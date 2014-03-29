@@ -67,8 +67,7 @@ public class Game {
 				isGettingOutOfPenaltyBox = true;
 				
 				System.out.println(players.get(currentPlayerIndex) + " is getting out of the penalty box");
-				places[currentPlayerIndex] = places[currentPlayerIndex] + roll;
-				if (places[currentPlayerIndex] > 11) places[currentPlayerIndex] = places[currentPlayerIndex] - 12;
+                move(roll);
 				
 				System.out.println(players.get(currentPlayerIndex)
 						+ "'s new location is " 
@@ -81,9 +80,8 @@ public class Game {
 				}
 			
 		} else {
-		
-			places[currentPlayerIndex] = places[currentPlayerIndex] + roll;
-			if (places[currentPlayerIndex] > 11) places[currentPlayerIndex] = places[currentPlayerIndex] - 12;
+
+            move(roll);
 			
 			System.out.println(players.get(currentPlayerIndex)
 					+ "'s new location is " 
@@ -94,7 +92,12 @@ public class Game {
 		
 	}
 
-	private void askQuestion() {
+    private void move(int step) {
+        places[currentPlayerIndex] = places[currentPlayerIndex] + step;
+        if (places[currentPlayerIndex] > 11) places[currentPlayerIndex] = places[currentPlayerIndex] - 12;
+    }
+
+    private void askQuestion() {
 		if (currentQuestionCategory() == POP)
 			System.out.println(popQuestions.removeFirst());
 		if (currentQuestionCategory() == SCIENCE)
