@@ -23,9 +23,13 @@ public class Game {
         Player player = new Player(playerName);
         players.add(player);
 
-        System.out.println(player.name() + " was added");
-        System.out.println("They are player number " + howManyPlayers());
+        sendMessage(player.name() + " was added");
+        sendMessage("They are player number " + howManyPlayers());
         return true;
+    }
+
+    private void sendMessage(String message){
+        System.out.println(message);
     }
 
     public int howManyPlayers() {
@@ -33,25 +37,25 @@ public class Game {
 	}
 
 	public void roll(int roll) {
-		System.out.println(currentPlayer().name() + " is the current player");
-		System.out.println("They have rolled a " + roll);
+		sendMessage(currentPlayer().name() + " is the current player");
+		sendMessage("They have rolled a " + roll);
 		
 		if (isInPenaltyBox() && notGetoutOfPenaltyBox(roll)) {
             isGettingOutOfPenaltyBox = false;
-            System.out.println(currentPlayer().name() + " is not getting out of the penalty box");
+            sendMessage(currentPlayer().name() + " is not getting out of the penalty box");
             return;
         }
 
         if (isInPenaltyBox()) {
             isGettingOutOfPenaltyBox = true;
-            System.out.println(currentPlayer().name() + " is getting out of the penalty box");
+            sendMessage(currentPlayer().name() + " is getting out of the penalty box");
         }
 
         move(roll);
-        System.out.println(currentPlayer().name()
+        sendMessage(currentPlayer().name()
                 + "'s new location is "
                 + currentPlayer().place());
-        System.out.println("The category is " + currentQuestionCategory());
+        sendMessage("The category is " + currentQuestionCategory());
 
         askQuestion();
 
@@ -74,7 +78,7 @@ public class Game {
     }
 
     private void askQuestion() {
-        System.out.println(currentQuestion().pop());
+        sendMessage(currentQuestion().pop());
 	}
 	
 
@@ -96,9 +100,9 @@ public class Game {
 	}
 
     private boolean correctlyAnswerAndAddCoin() {
-        System.out.println("Answer was correct!!!!");
+        sendMessage("Answer was correct!!!!");
         increaseCoin();
-        System.out.println(currentPlayer().name()
+        sendMessage(currentPlayer().name()
                 + " now has "
                 + currentPlayer().purse()
                 + " Gold Coins.");
@@ -121,17 +125,17 @@ public class Game {
         return isInPenaltyBox() && !isGettingOutOfPenaltyBox;
     }
 
-    public boolean wrongAnswer(){
-		System.out.println("Question was incorrectly answered");
-		System.out.println(currentPlayer().name() + " was sent to the penalty box");
-        currentPlayer().goIntoPenaltyBox();
-
-        nextPlayer();
-		return true;
-	}
-
 	private boolean didPlayerWin() {
 		return currentPlayer().isWin();
 	}
+
+    public boolean wrongAnswer(){
+        sendMessage("Question was incorrectly answered");
+        sendMessage(currentPlayer().name() + " was sent to the penalty box");
+        currentPlayer().goIntoPenaltyBox();
+
+        nextPlayer();
+        return true;
+    }
 
 }
