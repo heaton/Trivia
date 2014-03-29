@@ -17,11 +17,8 @@ public class Game {
     }
 
 	public boolean addPlayer(String playerName) {
-
         players.add(playerName);
-
         notifier.playerAdded(playerName, howManyPlayers());
-
         return true;
     }
 
@@ -37,7 +34,7 @@ public class Game {
         currentRoll = number;
         notifier.rolled(currentPlayer().name(), number);
 
-		if (currentPlayer().isInPenaltyBox() && notGetoutOfPenaltyBox()) {
+		if (stayInPenaltyBox()) {
             notifier.notGettingOutOfPenaltyBox(currentPlayer().name());
             return;
         }
@@ -50,12 +47,12 @@ public class Game {
 
 	}
 
-    private boolean stayInPenaltyBox() {
-        return currentPlayer().isInPenaltyBox() && notGetoutOfPenaltyBox();
-    }
-
     private Player currentPlayer() {
         return players.currentPlayer();
+    }
+
+    private boolean stayInPenaltyBox() {
+        return currentPlayer().isInPenaltyBox() && notGetoutOfPenaltyBox();
     }
 
     private boolean notGetoutOfPenaltyBox() {
