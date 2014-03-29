@@ -62,35 +62,34 @@ public class Game {
 		System.out.println(players.get(currentPlayerIndex) + " is the current player");
 		System.out.println("They have rolled a " + roll);
 		
-		if (inPenaltyBox[currentPlayerIndex]) {
-			if (roll % 2 != 0) {
-				isGettingOutOfPenaltyBox = true;
-				
-				System.out.println(players.get(currentPlayerIndex) + " is getting out of the penalty box");
-                move(roll);
-				
-				System.out.println(players.get(currentPlayerIndex)
-						+ "'s new location is " 
-						+ places[currentPlayerIndex]);
-				System.out.println("The category is " + currentQuestionCategory());
-				askQuestion();
-			} else {
-				System.out.println(players.get(currentPlayerIndex) + " is not getting out of the penalty box");
-				isGettingOutOfPenaltyBox = false;
-				}
-			
-		} else {
+		if (isInPenaltyBox() && notGetoutOfPenaltyBox(roll)) {
+            isGettingOutOfPenaltyBox = false;
+            System.out.println(players.get(currentPlayerIndex) + " is not getting out of the penalty box");
+            return;
+        }
 
-            move(roll);
-			
-			System.out.println(players.get(currentPlayerIndex)
-					+ "'s new location is " 
-					+ places[currentPlayerIndex]);
-			System.out.println("The category is " + currentQuestionCategory());
-			askQuestion();
-		}
-		
+        if (isInPenaltyBox()) {
+            isGettingOutOfPenaltyBox = true;
+            System.out.println(players.get(currentPlayerIndex) + " is getting out of the penalty box");
+        }
+
+        move(roll);
+        System.out.println(players.get(currentPlayerIndex)
+                + "'s new location is "
+                + places[currentPlayerIndex]);
+        System.out.println("The category is " + currentQuestionCategory());
+
+        askQuestion();
+
 	}
+
+    private boolean notGetoutOfPenaltyBox(int roll) {
+        return roll % 2 == 0;
+    }
+
+    private boolean isInPenaltyBox() {
+        return inPenaltyBox[currentPlayerIndex];
+    }
 
     private void move(int step) {
         places[currentPlayerIndex] = places[currentPlayerIndex] + step;
@@ -149,7 +148,7 @@ public class Game {
     }
 
     private boolean stayInPenaltyBox() {
-        return inPenaltyBox[currentPlayerIndex] && !isGettingOutOfPenaltyBox;
+        return isInPenaltyBox() && !isGettingOutOfPenaltyBox;
     }
 
     public boolean wrongAnswer(){
