@@ -8,7 +8,7 @@ public class Game {
 
     private QuestionStorage questions = new QuestionStorage();
 
-    boolean isGettingOutOfPenaltyBox;
+    private boolean isGettingOutOfPenaltyBox;
     
     public Game(){
         questions.init();
