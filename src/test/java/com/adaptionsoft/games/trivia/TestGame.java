@@ -29,7 +29,7 @@ public class TestGame {
     }
 
     private void addPlayerAndVerify(String name, int index) {
-        game.add(name);
+        game.addPlayer(name);
         assertEquals(index, game.howManyPlayers());
         verifyOutputAndClean(name + " was added", "They are player number " + index);
     }
@@ -46,7 +46,7 @@ public class TestGame {
 
     @Test
     public void roll_and_verify_categories() {
-        game.add("Petter");
+        game.addPlayer("Petter");
         console.clear();
 
         rollAndVerify(1, 1, "Science", 0);
@@ -73,7 +73,7 @@ public class TestGame {
 
     @Test
     public void roll_and_verify_out_of_penalty_box() {
-        game.add("Petter");
+        game.addPlayer("Petter");
         game.wrongAnswer();
         console.clear();
 
@@ -91,7 +91,7 @@ public class TestGame {
 
     @Test
     public void roll_and_verify_not_out_of_penalty_box() {
-        game.add("Petter");
+        game.addPlayer("Petter");
         game.wrongAnswer();
         console.clear();
 
@@ -102,8 +102,8 @@ public class TestGame {
 
     @Test
     public void wrong_answer_than_send_to_penalty_box() {
-        game.add("Petter");
-        game.add("Harry");
+        game.addPlayer("Petter");
+        game.addPlayer("Harry");
         console.clear();
 
         wrongAndVerify("Petter");
@@ -120,8 +120,8 @@ public class TestGame {
 
     @Test
     public void correct_and_go_on() {
-        game.add("Petter");
-        game.add("Harry");
+        game.addPlayer("Petter");
+        game.addPlayer("Harry");
         console.clear();
 
         correctAndVerify("Petter", 1);
@@ -137,7 +137,7 @@ public class TestGame {
 
     @Test
     public void correct_until_win() {
-        game.add("Petter");
+        game.addPlayer("Petter");
         console.clear();
 
         boolean noWinner = true;
@@ -149,8 +149,8 @@ public class TestGame {
 
     @Test
     public void correct_in_penalty_box_then_nothing_happened() {
-        game.add("Petter");
-        game.add("Harry");
+        game.addPlayer("Petter");
+        game.addPlayer("Harry");
         game.wrongAnswer();
         game.wasCorrectlyAnswered();
         game.roll(2);
@@ -168,8 +168,8 @@ public class TestGame {
 
     @Test
     public void correct_in_penalty_box_and_out() {
-        game.add("Petter");
-        game.add("Harry");
+        game.addPlayer("Petter");
+        game.addPlayer("Harry");
         game.wrongAnswer();
         game.wrongAnswer();
         game.roll(1);
@@ -209,35 +209,35 @@ public class TestGame {
 
     @Test
     public void one_player_is_not_playable() {
-        game.add("P1");
+        game.addPlayer("P1");
         assertFalse(game.isPlayable());
     }
 
     @Test
     public void two_player_is_playable() {
-        game.add("P1");
-        game.add("P2");
+        game.addPlayer("P1");
+        game.addPlayer("P2");
         assertTrue(game.isPlayable());
     }
 
     @Test
     public void test_players_limit_of_5() {
-        game.add("P1");
-        game.add("P2");
-        game.add("P3");
-        game.add("P4");
-        game.add("P5");
+        game.addPlayer("P1");
+        game.addPlayer("P2");
+        game.addPlayer("P3");
+        game.addPlayer("P4");
+        game.addPlayer("P5");
         assertEquals(5, game.howManyPlayers());
     }
 
     @Test(expected = ArrayIndexOutOfBoundsException.class)
     public void test_players_limit_expection_if_6() {
-        game.add("P1");
-        game.add("P2");
-        game.add("P3");
-        game.add("P4");
-        game.add("P5");
-        game.add("P6");
+        game.addPlayer("P1");
+        game.addPlayer("P2");
+        game.addPlayer("P3");
+        game.addPlayer("P4");
+        game.addPlayer("P5");
+        game.addPlayer("P6");
         fail();
     }
 }
