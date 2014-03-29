@@ -47,4 +47,7 @@ public class Player {
         return inPenaltyBox;
     }
 
+    public boolean isWin() {
+        return purse < 6;
+    }
 }
