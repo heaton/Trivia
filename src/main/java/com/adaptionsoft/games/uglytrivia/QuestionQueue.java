@@ -5,10 +5,16 @@ import java.util.LinkedList;
 
 public class QuestionQueue {
 
+    private String category;
     private Deque<String> list;
 
-    public QuestionQueue() {
+    public QuestionQueue(String category) {
+        this.category = category;
         list = new LinkedList<String>();
+    }
+
+    public String category() {
+        return category;
     }
 
     public void put(String question) {
@@ -18,4 +24,5 @@ public class QuestionQueue {
     public String pop() {
         return list.removeFirst();
     }
+
 }

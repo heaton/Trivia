@@ -14,10 +14,10 @@ public class Game {
 
     private List<Player> players = new ArrayList<Player>();
 
-    private QuestionQueue popQuestions = new QuestionQueue();
-    private QuestionQueue scienceQuestions = new QuestionQueue();
-    private QuestionQueue sportsQuestions = new QuestionQueue();
-    private QuestionQueue rockQuestions = new QuestionQueue();
+    private QuestionQueue popQuestions = new QuestionQueue(POP);
+    private QuestionQueue scienceQuestions = new QuestionQueue(SCIENCE);
+    private QuestionQueue sportsQuestions = new QuestionQueue(SPORTS);
+    private QuestionQueue rockQuestions = new QuestionQueue(ROCK);
     
     int currentPlayerIndex = 0;
     boolean isGettingOutOfPenaltyBox;
@@ -107,11 +107,15 @@ public class Game {
 	
 	
 	private String currentQuestionCategory() {
-		if (currentPlayer().place() % QUESTION_AMOUNT == 0) return POP;
-		if (currentPlayer().place() % QUESTION_AMOUNT == 1) return SCIENCE;
-		if (currentPlayer().place() % QUESTION_AMOUNT == 2) return SPORTS;
-		return ROCK;
+        return currentQuestion().category();
 	}
+
+    private QuestionQueue currentQuestion(){
+        if (currentPlayer().place() % QUESTION_AMOUNT == 0) return popQuestions;
+        if (currentPlayer().place() % QUESTION_AMOUNT == 1) return scienceQuestions;
+        if (currentPlayer().place() % QUESTION_AMOUNT == 2) return sportsQuestions;
+        return rockQuestions;
+    }
 
 	public boolean wasCorrectlyAnswered() {
 		if (stayInPenaltyBox()){
