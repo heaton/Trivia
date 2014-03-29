@@ -22,16 +22,20 @@ public class Game {
     int currentPlayerIndex = 0;
     boolean isGettingOutOfPenaltyBox;
     
-    public  Game(){
-    	for (int i = 0; i < 50; i++) {
-			popQuestions.put("Pop Question " + i);
-			scienceQuestions.put(("Science Question " + i));
-			sportsQuestions.put(("Sports Question " + i));
-			rockQuestions.put(createRockQuestion(i));
-    	}
+    public Game(){
+        initQuestions();
     }
 
-	public String createRockQuestion(int index){
+    private void initQuestions() {
+        for (int i = 0; i < 50; i++) {
+            popQuestions.put("Pop Question " + i);
+            scienceQuestions.put(("Science Question " + i));
+            sportsQuestions.put(("Sports Question " + i));
+            rockQuestions.put(createRockQuestion(i));
+        }
+    }
+
+    public String createRockQuestion(int index){
 		return "Rock Question " + index;
 	}
 	
@@ -98,7 +102,7 @@ public class Game {
         System.out.println(currentQuestion().pop());
 	}
 	
-	
+
 	private String currentQuestionCategory() {
         return currentQuestion().category();
 	}
