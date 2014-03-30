@@ -26,4 +26,5 @@ public class PlayerList {
         currentPlayerIndex++;
         if (currentPlayerIndex == count()) currentPlayerIndex = 0;
     }
+
 }
