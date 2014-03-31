@@ -46,7 +46,7 @@ public class TestGame {
 
     @Test
     public void roll_and_verify_categories() {
-        game.addPlayer("Petter");
+        addPetter();
         console.clear();
 
         rollAndVerify(1, 1, "Science", 0);
@@ -73,12 +73,30 @@ public class TestGame {
 
     @Test
     public void roll_and_verify_out_of_penalty_box() {
-        game.addPlayer("Petter");
-        game.wrongAnswer();
-        console.clear();
+        onePlayerWithOneWrongAndCleanConsole();
 
         rollAndVerifyOutOfPenaltyBox(3, 3, "Rock", 0);
         rollAndVerifyOutOfPenaltyBox(11, 2, "Sports", 0);
+    }
+
+    private void onePlayerWithOneWrongAndCleanConsole() {
+        addPetter();
+        oneWrongTerm();
+        console.clear();
+    }
+
+    private void addPetter() {
+        game.addPlayer("Petter");
+    }
+
+    private boolean oneWrongTerm() {
+        rollAndCleanConsole(0);
+        return game.wrongAnswer();
+    }
+
+    private void rollAndCleanConsole(int number) {
+        game.roll(number);
+        console.clear();
     }
 
     private void rollAndVerifyOutOfPenaltyBox(int rollNum, int location, String category, int questionIndex){
@@ -91,9 +109,7 @@ public class TestGame {
 
     @Test
     public void roll_and_verify_not_out_of_penalty_box() {
-        game.addPlayer("Petter");
-        game.wrongAnswer();
-        console.clear();
+        onePlayerWithOneWrongAndCleanConsole();
 
         game.roll(4);
         verifyOutputAndClean("Petter is the current player", "They have rolled a 4",
@@ -102,8 +118,8 @@ public class TestGame {
 
     @Test
     public void wrong_answer_than_send_to_penalty_box() {
-        game.addPlayer("Petter");
-        game.addPlayer("Harry");
+        addPetter();
+        addHarry();
 
         wrongAndVerify("Petter");
         wrongAndVerify("Harry");
@@ -112,8 +128,7 @@ public class TestGame {
     }
 
     private void wrongAndVerify(String currentPlayer) {
-        game.roll(1);
-        console.clear();
+        rollAndCleanConsole(1);
         boolean noWinner = game.wrongAnswer();
         assertTrue(noWinner);
         verifyOutputAndClean("Question was incorrectly answered", currentPlayer + " was sent to the penalty box");
@@ -121,8 +136,8 @@ public class TestGame {
 
     @Test
     public void correct_and_go_on() {
-        game.addPlayer("Petter");
-        game.addPlayer("Harry");
+        addPetter();
+        addHarry();
         console.clear();
 
         correctAndVerify("Petter", 1);
@@ -130,76 +145,67 @@ public class TestGame {
         correctAndVerify("Petter", 2);
     }
 
+    private void addHarry() {
+        game.addPlayer("Harry");
+    }
+
     private void correctAndVerify(String currentPlayer, int coins) {
-        boolean noWinner = game.wasCorrectlyAnswered();
-        assertTrue(noWinner);
+        oneCorrectTerm();
         verifyOutputAndClean("Answer was correct!!!!", currentPlayer + " now has " + coins + " Gold Coins.");
+    }
+
+    private boolean oneCorrectTerm() {
+        rollAndCleanConsole(0);
+        return game.wasCorrectlyAnswered();
     }
 
     @Test
     public void correct_until_win() {
-        game.addPlayer("Petter");
-        console.clear();
+        addPetter();
 
-        boolean noWinner = true;
-        for(int i=0; i<6; i++) {
-            noWinner = game.wasCorrectlyAnswered();
+        boolean noWinner;
+        for(int i=0; i<5; i++) {
+            noWinner = oneCorrectTerm();
+            assertTrue(noWinner);
         }
+        noWinner = oneCorrectTerm();
         assertFalse(noWinner);
     }
 
     @Test
     public void correct_in_penalty_box_then_nothing_happened() {
-        game.addPlayer("Petter");
-        game.addPlayer("Harry");
-        game.wrongAnswer();
-        game.wasCorrectlyAnswered();
-        game.roll(2);
-        console.clear();
+        addPetter();
+        addHarry();
+        oneWrongTerm(); // Petter
+        oneCorrectTerm(); // Harry
 
+        rollAndCleanConsole(2);
         correctInPenaltyBoxAndVerify();
+
         correctAndVerify("Harry", 2);
     }
 
     private void correctInPenaltyBoxAndVerify() {
-        boolean noWinner = game.wasCorrectlyAnswered();
+        boolean noWinner = oneCorrectTerm();
         assertTrue(noWinner);
+        verifyNothingOutput();
+    }
+
+    private void verifyNothingOutput() {
         verifyOutputAndClean();
     }
 
     @Test
     public void correct_in_penalty_box_and_out() {
-        game.addPlayer("Petter");
-        game.addPlayer("Harry");
-        game.wrongAnswer();
-        game.wrongAnswer();
-        game.roll(1);
-        console.clear();
+        addPetter();
+        oneWrongTerm();
 
+        rollAndCleanConsole(1);
         correctOutPenaltyboxAndVerify("Petter", 1);
 
-        game.roll(2);
-        console.clear();
-
-        correctInPenaltyBoxAndVerify();
-
-        game.wrongAnswer();
-        game.roll(3);
-        console.clear();
-
-        correctOutPenaltyboxAndVerify("Harry", 1);
-
-        game.roll(3);
-        console.clear();
-
+        rollAndCleanConsole(3);
         correctOutPenaltyboxAndVerify("Petter", 2);
-        correctOutPenaltyboxAndVerify("Harry", 2);
-        correctOutPenaltyboxAndVerify("Petter", 3);
 
-        game.roll(2);
-        console.clear();
-
-        correctInPenaltyBoxAndVerify();
     }
 
     private void correctOutPenaltyboxAndVerify(String currentPlayer, int coins) {
@@ -234,16 +240,13 @@ public class TestGame {
 
     @Test
     public void wrong_answer_stay_in_penalty_box_should_no_message() {
-        game.addPlayer("Petter");
-        game.roll(1);
+        addPetter();
+        oneWrongTerm();
+
+        rollAndCleanConsole(2);
         game.wrongAnswer();
 
-        game.roll(2);
-
-        console.clear();
-
-        game.wrongAnswer();
-        verifyOutputAndClean();
+        verifyNothingOutput();
     }
 
 }
