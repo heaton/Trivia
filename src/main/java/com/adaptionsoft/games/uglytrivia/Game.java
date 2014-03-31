@@ -32,8 +32,7 @@ public class Game {
 	}
 
 	public void roll(int number) {
-        nextPlayer();
-        hold(number);
+        newTerm(number);
 
 		if (stayInPenaltyBox()) {
             notOutOfPenaltyBox();
@@ -47,6 +46,10 @@ public class Game {
 
 	}
 
+    private void nextPlayer() {
+        players.next();
+    }
+
     private void notOutOfPenaltyBox() {
         notifier.notGettingOutOfPenaltyBox(currentPlayer().name());
     }
@@ -57,7 +60,8 @@ public class Game {
         }
     }
 
-    private void hold(int number) {
+    private void newTerm(int number) {
+        nextPlayer();
         currentRoll = number;
         notifier.rolled(currentPlayer().name(), number);
     }
@@ -115,10 +119,6 @@ public class Game {
     private void awardOneCoin(Player player) {
         player.winOneCoin();
         notifier.correctAndCurrentCoins(player.name(), player.purse());
-    }
-
-    private void nextPlayer() {
-        players.next();
     }
 
     public boolean wrongAnswer() {
