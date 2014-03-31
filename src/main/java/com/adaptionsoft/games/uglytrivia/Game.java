@@ -87,7 +87,7 @@ public class Game {
         return questions.get(questionIndex);
     }
 
-	public boolean wasCorrectlyAnswered() {
+	public boolean correctlyAnswer() {
 		if (stayInPenaltyBox()){
             nextPlayer();
             return true;

@@ -2,6 +2,7 @@ package com.adaptionsoft.games.trivia;
 
 import com.adaptionsoft.games.trivia.mock.TextConsole;
 import com.adaptionsoft.games.uglytrivia.Game;
+import com.adaptionsoft.games.uglytrivia.exception.MissRollException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -156,7 +157,7 @@ public class TestGame {
 
     private boolean oneCorrectTerm() {
         rollAndCleanConsole(0);
-        return game.wasCorrectlyAnswered();
+        return game.correctlyAnswer();
     }
 
     @Test
@@ -209,7 +210,7 @@ public class TestGame {
     }
 
     private void correctOutPenaltyboxAndVerify(String currentPlayer, int coins) {
-        boolean noWinner = game.wasCorrectlyAnswered();
+        boolean noWinner = game.correctlyAnswer();
         assertTrue(noWinner);
         verifyOutputAndClean("Answer was correct!!!!", currentPlayer + " now has " + coins + " Gold Coins.");
     }
@@ -250,6 +251,12 @@ public class TestGame {
         game.wrongAnswer();
 
         verifyNothingOutput();
+    }
+
+    @Test(expected = MissRollException.class)
+    public void must_roll_before_answer() {
+        addPetter();
+        game.correctlyAnswer();
     }
 
 }
