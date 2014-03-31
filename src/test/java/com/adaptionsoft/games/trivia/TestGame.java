@@ -187,7 +187,7 @@ public class TestGame {
     }
 
     private void correctInPenaltyBoxAndVerify() {
-        boolean noWinner = oneCorrectTerm();
+        boolean noWinner = game.correctlyAnswer();
         assertTrue(noWinner);
         verifyNothingOutput();
     }
@@ -265,6 +265,14 @@ public class TestGame {
         addPetter();
         game.wrongAnswer();
         fail();
+    }
+
+    @Test
+    public void change_player_before_roll() {
+        addPetter();
+        addHarry();
+        rollAndCleanConsole(0);
+        correctAndVerify("Harry", 1);
     }
 
 }

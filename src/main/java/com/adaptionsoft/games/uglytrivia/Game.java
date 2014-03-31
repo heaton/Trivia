@@ -32,6 +32,7 @@ public class Game {
 	}
 
 	public void roll(int number) {
+        nextPlayer();
         hold(number);
 
 		if (stayInPenaltyBox()) {
@@ -92,7 +93,6 @@ public class Game {
         checkRollBeforeAnswer();
 
         if (stayInPenaltyBox()){
-            nextPlayer();
             return true;
         }
 
@@ -108,8 +108,6 @@ public class Game {
     private boolean correctlyAnswerAndAddCoin() {
         Player currentPlayer = currentPlayer();
         awardOneCoin(currentPlayer);
-
-        nextPlayer();
 
         return currentPlayer.isWin();
     }
@@ -127,7 +125,6 @@ public class Game {
         checkRollBeforeAnswer();
         sendToPenaltyBox();
 
-        nextPlayer();
         return true;
     }
 

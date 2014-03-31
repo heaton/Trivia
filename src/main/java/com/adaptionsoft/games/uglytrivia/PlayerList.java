@@ -7,7 +7,7 @@ public class PlayerList {
 
     private List<Player> players = new ArrayList<Player>();
 
-    private int currentPlayerIndex = 0;
+    private int currentPlayerIndex = -1;
 
     public int count() {
         return players.size();
