@@ -3,6 +3,7 @@ package com.adaptionsoft.games.uglytrivia;
 public class Player {
 
     private static final int MAX_PLACE = 12;
+    private static final int COINS_ON_WIN = 6;
 
     private String name;
     private int place;
@@ -48,6 +49,7 @@ public class Player {
     }
 
     public boolean isWin() {
-        return purse < 6;
+        return purse < COINS_ON_WIN;
     }
+
 }

@@ -7,7 +7,7 @@ public class PlayerList {
 
     private List<Player> players = new ArrayList<Player>();
 
-    int currentPlayerIndex = 0;
+    private int currentPlayerIndex = 0;
 
     public int count() {
         return players.size();
@@ -24,7 +24,9 @@ public class PlayerList {
 
     public void next() {
         currentPlayerIndex++;
-        if (currentPlayerIndex == count()) currentPlayerIndex = 0;
+        if (currentPlayerIndex == count()){
+            currentPlayerIndex = 0;
+        }
     }
 
 }
