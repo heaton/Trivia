@@ -91,8 +91,8 @@ public class Term {
         notifier.incorrectAndSendToPenaltyBox(player.name());
     }
 
-    public boolean isEndGame() {
-        return endTerm;
+    public boolean notEndGame() {
+        return !endTerm;
     }
 
 }

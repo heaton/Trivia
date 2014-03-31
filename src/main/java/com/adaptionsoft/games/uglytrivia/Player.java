@@ -49,7 +49,7 @@ public class Player {
     }
 
     public boolean isWin() {
-        return purse < COINS_ON_WIN;
+        return purse == COINS_ON_WIN;
     }
 
 }

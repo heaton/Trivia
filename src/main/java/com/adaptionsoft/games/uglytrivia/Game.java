@@ -49,7 +49,7 @@ public class Game {
     public boolean correctlyAnswer() {
         checkRollBeforeAnswer();
         currentTerm.correctAnswer();
-        return currentTerm.isEndGame();
+        return currentTerm.notEndGame();
     }
 
     private void checkRollBeforeAnswer() {
@@ -61,7 +61,7 @@ public class Game {
     public boolean wrongAnswer() {
         checkRollBeforeAnswer();
         currentTerm.wrongAnswer();
-        return currentTerm.isEndGame();
+        return currentTerm.notEndGame();
     }
 
 }
