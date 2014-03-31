@@ -1,7 +1,6 @@
 package com.adaptionsoft.games.uglytrivia;
 
 import com.adaptionsoft.games.uglytrivia.exception.MissRollException;
-import com.adaptionsoft.games.uglytrivia.question.QuestionQueue;
 
 public class Game {
 
@@ -11,7 +10,7 @@ public class Game {
 
     private Notifier notifier = new Notifier();
 
-    private int currentRoll = -1;
+    private Term currentTerm;
 
     public Game(){
         questions.init();
@@ -34,104 +33,35 @@ public class Game {
 	public void roll(int number) {
         newTerm(number);
 
-		if (stayInPenaltyBox()) {
-            notOutOfPenaltyBox();
-            return;
-        }
-
-        outPenaltyBoxIfNeed();
-
-        move(number);
-        askQuestion();
-
+        currentTerm.checkRollAndAskQuestion(questions);
 	}
 
     private void nextPlayer() {
         players.next();
     }
 
-    private void notOutOfPenaltyBox() {
-        notifier.notGettingOutOfPenaltyBox(currentPlayer().name());
-    }
-
-    private void outPenaltyBoxIfNeed() {
-        if (currentPlayer().isInPenaltyBox()) {
-            notifier.gettingOutOfPenaltyBox(currentPlayer().name());
-        }
-    }
-
     private void newTerm(int number) {
         nextPlayer();
-        currentRoll = number;
-        notifier.rolled(currentPlayer().name(), number);
-    }
-
-    private Player currentPlayer() {
-        return players.currentPlayer();
-    }
-
-    private boolean stayInPenaltyBox() {
-        return currentPlayer().isInPenaltyBox() && notGetoutOfPenaltyBox();
-    }
-
-    private boolean notGetoutOfPenaltyBox() {
-        return currentRoll % 2 == 0;
-    }
-
-    private void move(int number) {
-        currentPlayer().move(number);
-        notifier.newLocation(currentPlayer().name(), currentPlayer().place());
-    }
-
-    private void askQuestion() {
-        String question = currentQuestion().pop();
-        notifier.newQuestion(currentQuestion().category(), question);
-    }
-
-    private QuestionQueue currentQuestion(){
-        int questionIndex = currentPlayer().place() % questions.size();
-        return questions.get(questionIndex);
+        currentTerm = new Term(players.currentPlayer(), number, notifier);
+        currentTerm.notifier();
     }
 
 	public boolean correctlyAnswer() {
         checkRollBeforeAnswer();
-
-        if (stayInPenaltyBox()){
-            return true;
-        }
-
-        return correctlyAnswerAndAddCoin();
+        currentTerm.correctAnswer();
+        return currentTerm.isLastestTerm();
 	}
 
     private void checkRollBeforeAnswer() {
-        if(currentRoll == -1) {
+        if(currentTerm == null) {
             throw new MissRollException("Must roll before answer!");
         }
     }
 
-    private boolean correctlyAnswerAndAddCoin() {
-        Player currentPlayer = currentPlayer();
-        awardOneCoin(currentPlayer);
-
-        return currentPlayer.isWin();
-    }
-
-    private void awardOneCoin(Player player) {
-        player.winOneCoin();
-        notifier.correctAndCurrentCoins(player.name(), player.purse());
-    }
-
     public boolean wrongAnswer() {
         checkRollBeforeAnswer();
-        sendToPenaltyBox();
-
-        return true;
-    }
-
-    private void sendToPenaltyBox() {
-        if(stayInPenaltyBox()) return;
-        currentPlayer().goIntoPenaltyBox();
-        notifier.incorrectAndSendToPenaltyBox(currentPlayer().name());
+        currentTerm.wrongAnswer();
+        return currentTerm.isLastestTerm();
     }
 
 }
