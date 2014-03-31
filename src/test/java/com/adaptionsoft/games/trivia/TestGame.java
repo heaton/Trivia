@@ -254,9 +254,16 @@ public class TestGame {
     }
 
     @Test(expected = MissRollException.class)
-    public void must_roll_before_answer() {
+    public void must_roll_before_answer_for_correct() {
         addPetter();
         game.correctlyAnswer();
+        fail();
+    }
+
+    @Test(expected = MissRollException.class)
+    public void must_roll_before_answer_for_wrong() {
+        addPetter();
+        game.wrongAnswer();
         fail();
     }
 

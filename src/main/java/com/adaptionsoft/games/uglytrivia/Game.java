@@ -124,6 +124,7 @@ public class Game {
     }
 
     public boolean wrongAnswer() {
+        checkRollBeforeAnswer();
         sendToPenaltyBox();
 
         nextPlayer();
