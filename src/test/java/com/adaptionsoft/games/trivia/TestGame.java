@@ -257,6 +257,7 @@ public class TestGame {
     public void must_roll_before_answer() {
         addPetter();
         game.correctlyAnswer();
+        fail();
     }
 
 }

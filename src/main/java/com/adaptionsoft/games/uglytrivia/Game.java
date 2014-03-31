@@ -1,5 +1,6 @@
 package com.adaptionsoft.games.uglytrivia;
 
+import com.adaptionsoft.games.uglytrivia.exception.MissRollException;
 import com.adaptionsoft.games.uglytrivia.question.QuestionQueue;
 
 public class Game {
@@ -10,7 +11,7 @@ public class Game {
 
     private Notifier notifier = new Notifier();
 
-    private int currentRoll;
+    private int currentRoll = -1;
 
     public Game(){
         questions.init();
@@ -88,13 +89,21 @@ public class Game {
     }
 
 	public boolean correctlyAnswer() {
-		if (stayInPenaltyBox()){
+        checkRollBeforeAnswer();
+
+        if (stayInPenaltyBox()){
             nextPlayer();
             return true;
         }
 
         return correctlyAnswerAndAddCoin();
 	}
+
+    private void checkRollBeforeAnswer() {
+        if(currentRoll == -1) {
+            throw new MissRollException("Must roll before answer!");
+        }
+    }
 
     private boolean correctlyAnswerAndAddCoin() {
         Player currentPlayer = currentPlayer();
