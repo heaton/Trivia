@@ -216,26 +216,29 @@ public class TestGame {
 
     @Test
     public void one_player_is_not_playable() {
-        game.addPlayer("P1");
-        assertFalse(game.isPlayable());
+        addMorePlayers(1);
+        boolean playable = game.isPlayable();
+        assertFalse(playable);
+    }
+
+    private void addMorePlayers(int number) {
+        for (int i = 0; i < number; i++) {
+            game.addPlayer("P" + i);
+        }
     }
 
     @Test
     public void two_player_is_playable() {
-        game.addPlayer("P1");
-        game.addPlayer("P2");
-        assertTrue(game.isPlayable());
+        addMorePlayers(2);
+        boolean playable = game.isPlayable();
+        assertTrue(playable);
     }
 
     @Test
     public void players_limit_rather_than_5() {
-        game.addPlayer("P1");
-        game.addPlayer("P2");
-        game.addPlayer("P3");
-        game.addPlayer("P4");
-        game.addPlayer("P5");
-        game.addPlayer("P6");
-        assertEquals(6, game.howManyPlayers());
+        addMorePlayers(6);
+        int playersCount = game.howManyPlayers();
+        assertEquals(6, playersCount);
     }
 
     @Test
