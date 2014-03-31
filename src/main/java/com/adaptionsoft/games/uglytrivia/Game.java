@@ -12,11 +12,11 @@ public class Game {
 
     private Term currentTerm;
 
-    public Game(){
+    public Game() {
         questions.init();
     }
 
-	public boolean addPlayer(String playerName) {
+    public boolean addPlayer(String playerName) {
         players.add(playerName);
         notifier.playerAdded(playerName, howManyPlayers());
         return true;
@@ -27,14 +27,14 @@ public class Game {
     }
 
     public int howManyPlayers() {
-		return players.count();
-	}
+        return players.count();
+    }
 
-	public void roll(int number) {
+    public void roll(int number) {
         newTerm(number);
 
         currentTerm.checkRollAndAskQuestion(questions);
-	}
+    }
 
     private void nextPlayer() {
         players.next();
@@ -46,14 +46,14 @@ public class Game {
         currentTerm.notifier();
     }
 
-	public boolean correctlyAnswer() {
+    public boolean correctlyAnswer() {
         checkRollBeforeAnswer();
         currentTerm.correctAnswer();
-        return currentTerm.isLastestTerm();
-	}
+        return currentTerm.isEndGame();
+    }
 
     private void checkRollBeforeAnswer() {
-        if(currentTerm == null) {
+        if (currentTerm == null) {
             throw new MissRollException("Must roll before answer!");
         }
     }
@@ -61,7 +61,7 @@ public class Game {
     public boolean wrongAnswer() {
         checkRollBeforeAnswer();
         currentTerm.wrongAnswer();
-        return currentTerm.isLastestTerm();
+        return currentTerm.isEndGame();
     }
 
 }

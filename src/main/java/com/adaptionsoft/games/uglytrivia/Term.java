@@ -6,6 +6,7 @@ public class Term {
 
     private Player player;
     private int rollNumber;
+    private boolean endTerm = false;
 
     private Notifier notifier;
 
@@ -74,6 +75,8 @@ public class Term {
     private void awardOneCoin() {
         player.winOneCoin();
         notifier.correctAndCurrentCoins(player.name(), player.purse());
+
+        endTerm = player.isWin();
     }
 
     public void wrongAnswer() {
@@ -88,8 +91,8 @@ public class Term {
         notifier.incorrectAndSendToPenaltyBox(player.name());
     }
 
-    public boolean isLastestTerm() {
-        return player.isWin();
+    public boolean isEndGame() {
+        return endTerm;
     }
 
 }
